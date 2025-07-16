@@ -39,7 +39,7 @@ const AuthScreen = () => {
     const handleSignIn = async () => {
         try {
             // Axios를 사용하여 로그인 API에 POST 요청 전송
-            const response = await axios.post("http://localhost:3000/sign-in", {email, password});
+            const response = await axios.post("http://192.168.55.174:3000/sign-in", {email, password});
 
             // 응답 데이터의 isSuccess 값 확인
             if (!response.data.isSuccess) {
@@ -65,7 +65,7 @@ const AuthScreen = () => {
     const handleSignUp = async () => {
         try {
             // Axios를 사용하여 회원가입 API에 POST 요청 전송
-            const response = await axios.post("http://localhost:3000/sign-up", {email, password});
+            const response = await axios.post("http://192.168.55.174:3000/sign-up", {email, password});
 
             // 응답 데이터의 isSuccess 값 확인
             if (!response.data.isSuccess) {

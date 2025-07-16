@@ -10,12 +10,12 @@ const MainScreen = () => {
         const token = await AsyncStorage.getItem("token");
 
         const res = await axios.post(
-            "http://localhost:3000/increase-number",
+            "http://192.168.55.174:3000/increase-number",
             {count, token}
         );
 
         if (res.data.isSuccess === true) {
-            setCount((prev) => {return res.data.count;});
+            setCount((_) => {return res.data.count;});
         }
     }
 

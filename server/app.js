@@ -67,8 +67,24 @@ app.post('/sign-in', async (req, res) => {
   }
 });
 
-app.get('/', (req, res) => {
-  res.send('Server is running!');
+app.post("/increase-number", async (req, res) => {
+  const {count, token} = req.body;
+  jwt.verify(token, "secret", async (err, user) => {
+    if (err) {
+      return res.json({isSuccess: false});
+    } else {
+      const userEmail = user.email;
+      const [rows] = await pool.execute(
+          "SELECT COUNT(*) as userCount FROM users WHERE EMAIL = ?",
+          [userEmail]
+      );
+      if (rows[0]['userCount'] === 0) {
+        return res.json({isSuccess: false});
+      } else {
+        return res.json({isSuccess: true, count: count + 1});
+      }
+    }
+  })
 });
 
 app.listen(port, () => {
