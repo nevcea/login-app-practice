@@ -1,6 +1,7 @@
 import express from 'express';
 import { makePool } from './db.mjs';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const app = express();
 const port = 3000;
@@ -51,13 +52,16 @@ app.post('/signin', async (req, res) => {
       [email]
     );
 
+    const findUser = row2[0];
     const isPasswordSame = await bcrypt.compare(password, rows2[0].password);
 
     if (!isPasswordSame) {
       return res.json({ isSuccess: false });
     }
 
-    return res.json({ isSuccess: true });
+    const token = await jwt.sign({data: findUser.email}, 'secret', {expiresIn: '3m'});
+
+    return res.json({ isSuccess: true, token });
   } catch (e) {
     return res.json({ isSuccess: false });
   }
