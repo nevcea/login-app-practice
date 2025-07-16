@@ -2,6 +2,7 @@ import {Alert, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {useState} from "react";
 import { useRouter } from 'expo-router';
 import axios from 'axios';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // AuthScreen 컴포넌트 정의
 const AuthScreen = () => {
@@ -38,7 +39,7 @@ const AuthScreen = () => {
     const handleSignIn = async () => {
         try {
             // Axios를 사용하여 로그인 API에 POST 요청 전송
-            const response = await axios.post("http://10.0.2.2:3000/signin", {email, password});
+            const response = await axios.post("http://localhost:3000/sign-in", {email, password});
 
             // 응답 데이터의 isSuccess 값 확인
             if (!response.data.isSuccess) {
@@ -64,7 +65,7 @@ const AuthScreen = () => {
     const handleSignUp = async () => {
         try {
             // Axios를 사용하여 회원가입 API에 POST 요청 전송
-            const response = await axios.post("http://10.0.2.2:3000/signup", {email, password});
+            const response = await axios.post("http://localhost:3000/sign-up", {email, password});
 
             // 응답 데이터의 isSuccess 값 확인
             if (!response.data.isSuccess) {

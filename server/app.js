@@ -8,7 +8,7 @@ const port = 3000;
 
 app.use(express.json());
 
-app.post('/signup', async (req, res) => {
+app.post('/sign-up', async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -29,12 +29,12 @@ app.post('/signup', async (req, res) => {
     );
 
     return res.json({ isSuccess: true });
-  } catch (e) {
+  } catch {
     return res.json({ isSuccess: false });
   }
 });
 
-app.post('/signin', async (req, res) => {
+app.post('/sign-in', async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -52,7 +52,7 @@ app.post('/signin', async (req, res) => {
       [email]
     );
 
-    const findUser = row2[0];
+    const findUser = rows2[0];
     const isPasswordSame = await bcrypt.compare(password, rows2[0].password);
 
     if (!isPasswordSame) {
@@ -62,7 +62,7 @@ app.post('/signin', async (req, res) => {
     const token = await jwt.sign({data: findUser.email}, 'secret', {expiresIn: '3m'});
 
     return res.json({ isSuccess: true, token });
-  } catch (e) {
+  } catch {
     return res.json({ isSuccess: false });
   }
 });

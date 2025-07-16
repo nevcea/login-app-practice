@@ -1,13 +1,22 @@
 import { useState } from "react";
 import {Text, TouchableOpacity, View} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 const MainScreen = () => {
     const [count, setCount] = useState(0);
 
-    const onPressPlusButton = () => {
-        setCount((prev) => {
-            return prev + 1;
-        });
+    const onPressPlusButton = async () => {
+        const token = await AsyncStorage.getItem("token");
+
+        const res = await axios.post(
+            "http://localhost:3000/increase-number",
+            {count, token}
+        );
+
+        if (res.data.isSuccess === true) {
+            setCount((prev) => {return res.data.count;});
+        }
     }
 
     const onPressMinusButton = () => {
