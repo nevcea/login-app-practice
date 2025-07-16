@@ -1,5 +1,5 @@
 import express from 'express';
-import { makePool } from './db.mjs';
+import { pool } from './db.mjs';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -12,7 +12,7 @@ app.post('/signup', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const [rows] = await makePool.execute(
+    const [rows] = await pool.execute(
       "SELECT COUNT(*) as userCount FROM users WHERE email = ?",
       [email]
     );
@@ -23,7 +23,7 @@ app.post('/signup', async (req, res) => {
 
     const cryptedPassword = await bcrypt.hash(password, 10);
 
-    await makePool.execute(
+    await pool.execute(
       "INSERT INTO users (email, password) VALUES (?, ?)",
       [email, cryptedPassword]
     );
@@ -38,7 +38,7 @@ app.post('/signin', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const [rows] = await makePool.execute(
+    const [rows] = await pool.execute(
       "SELECT COUNT(*) as userCount FROM users WHERE email = ?",
       [email]
     );
@@ -47,7 +47,7 @@ app.post('/signin', async (req, res) => {
       return res.json({ isSuccess: false });
     }
 
-    const [rows2] = await makePool.execute(
+    const [rows2] = await pool.execute(
       "SELECT email, password FROM users WHERE email = ?",
       [email]
     );
