@@ -47,6 +47,7 @@ const AuthScreen = () => {
             } else {
                 // 로그인이 성공했을 경우 메시지 초기화 및 메인 화면으로 이동
                 setAuthMessage('');
+                await AsyncStorage.setItem("token", response.data.token);
                 router.replace('/main-screen'); // 메인 화면으로 대체 (뒤로가기 방지)
             }
         } catch (error) {
